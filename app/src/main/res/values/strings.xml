@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MiniGames</string>
+    <string name="taptoplay">Tap the screen to Play</string>
+    <string name="catchthebeat">Wario WAE</string>
+    <string name="audiobutton">Audio Button</string>
+    <string name="background">Background</string>
 </resources>
