@@ -11,10 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniGames">
         <activity
+            android:name=".GameActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.MiniGames.noActionBar"
+            android:exported="true"
             android:screenOrientation="landscape"
-            android:exported="true">
+            android:theme="@style/AppTheme.MiniGames.noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
