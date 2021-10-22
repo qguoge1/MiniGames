@@ -19,8 +19,8 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = screenX;
         this.screenY = screenY;
 
-        screenRatioX = 1920f/2340f;
-        screenRatioY = 1080f/1080f;
+        screenRatioX = 1920f/2340;
+        screenRatioY = 1080f/1080;
 
         background1 = new Background(screenX,screenY,getResources());
         background2 = new Background(screenX,screenY,getResources());
@@ -32,9 +32,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        update();
-        draw();
-        sleep();
+        while(isPlaying){
+            update();
+            draw();
+            sleep();
+        }
+
     }
     public void resume(){
         isPlaying = true;
@@ -43,7 +46,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
     private void update(){
         background1.x -= 10*screenRatioX;
-        background2.x -= 10*screenRatioY;
+        background2.x -= 10*screenRatioX;
         if(background1.x + background1.background.getWidth()< 0){
             background1.x = screenX;
         }

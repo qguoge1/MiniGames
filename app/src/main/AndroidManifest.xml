@@ -12,7 +12,9 @@
         android:theme="@style/Theme.MiniGames">
         <activity
             android:name=".GameActivity"
-            android:exported="true" />
+            android:screenOrientation="landscape"
+            android:exported="true"
+            android:theme= "@style/AppTheme.MiniGames.noActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
