@@ -12,7 +12,7 @@ public class Character {
     int x, y, width, height, moveCounter = 0;
     Bitmap character1, character2;
     boolean swap = false;
-
+    boolean isMovingLeft= false, isMovingRight=false;
     Character(int screenX, int screenY, Resources res) {
         character1 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherkiai);
         character2 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherfail);

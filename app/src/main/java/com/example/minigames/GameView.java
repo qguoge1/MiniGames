@@ -1,24 +1,28 @@
 package com.example.minigames;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 
+@SuppressLint("ViewConstructor")
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
     private boolean isPlaying;
-    private Background background1,background2;
+    private final Background background1;
+    private final Background background2;
     private static int screenX, screenY;
-    private Paint paint;
-    private Character character;
+    private final Paint paint;
+    private final Character character;
     public static float screenRatioX, screenRatioY;
 
     public GameView(Context context, int screenX,int screenY) {
         super(context);
-        this.screenX = screenX;
-        this.screenY = screenY;
+        GameView.screenX = screenX;
+        GameView.screenY = screenY;
 
         screenRatioX = 1920f/2340;
         screenRatioY = 1080f/1080;
@@ -55,6 +59,18 @@ public class GameView extends SurfaceView implements Runnable {
         if(background2.x + background2.background.getWidth()<0){
             background2.x = screenX;
         }
+        if(character.isMovingLeft){
+            character.x -= 20*screenRatioX;
+        }
+        if(character.isMovingRight){
+            character.x += 20*screenRatioX;
+        }
+        if(character.x > screenX-character.width){
+            character.x = screenX-character.width;
+        }
+        if(character.x < 0){
+            character.x = 0;
+        }
     }
     private void draw(){
         if(getHolder().getSurface().isValid()){
@@ -82,5 +98,25 @@ public class GameView extends SurfaceView implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                if (event.getX()< (float)screenX/2){
+                    character.isMovingLeft= true;
+                }
+                if(event.getX()>= (float)screenX/2){
+                    character.isMovingRight= true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                character.isMovingLeft=false;
+                character.isMovingRight=false;
+                break;
+        }
+        return true;
     }
 }
