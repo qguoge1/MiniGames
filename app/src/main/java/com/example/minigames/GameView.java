@@ -51,20 +51,6 @@ public class GameView extends SurfaceView implements Runnable {
         thread.start();
     }
     private void update(){
-        background1.x -= 10*screenRatioX;
-        background2.x -= 10*screenRatioX;
-        if(background1.x + background1.background.getWidth()< 0){
-            background1.x = screenX;
-        }
-        if(background2.x + background2.background.getWidth()<0){
-            background2.x = screenX;
-        }
-        if(character.isMovingLeft){
-            character.x -= 20*screenRatioX;
-        }
-        if(character.isMovingRight){
-            character.x += 20*screenRatioX;
-        }
         if(character.x > screenX-character.width){
             character.x = screenX-character.width;
         }
@@ -104,18 +90,9 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                if (event.getX()< (float)screenX/2){
-                    character.isMovingLeft= true;
-                }
-                if(event.getX()>= (float)screenX/2){
-                    character.isMovingRight= true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                character.isMovingLeft=false;
-                character.isMovingRight=false;
-                break;
+            case MotionEvent.ACTION_MOVE:
+                if(event.getX() < screenX-character.width && event.getX()>0)
+                    character.x = (int) event.getX();
         }
         return true;
     }
