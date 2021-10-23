@@ -11,8 +11,8 @@ import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity {
     GameView gameView;
-    Sprite sprite;
-    Bitmap QQ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
