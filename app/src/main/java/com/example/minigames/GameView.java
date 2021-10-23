@@ -69,7 +69,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
     private void sleep(){
         try {
-            Thread.sleep(15);
+            Thread.sleep(17);       //1/17 = ~60 fps
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
