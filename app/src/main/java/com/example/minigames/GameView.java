@@ -3,7 +3,9 @@ package com.example.minigames;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -23,7 +25,7 @@ public class GameView extends SurfaceView implements Runnable {
     private List<Fruit> fruits;
     public static float screenRatioX, screenRatioY;
     int fruitDelayCnt=0;
-
+    int score = 0;
     public GameView(Context context, int screenX,int screenY) {
         super(context);
         GameView.screenX = screenX;
@@ -74,7 +76,13 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         List<Fruit> trash = new ArrayList<>();
+        Rect Hitbox = new Rect();
         for (Fruit fruit : fruits){
+            if(Hitbox.intersects(fruit.getRect(),character.getRect())){
+                trash.add(fruit);
+                score+=1;
+
+            }
             if(fruit.y > character.y+character.height){
                 trash.add(fruit);
             }
@@ -91,9 +99,17 @@ public class GameView extends SurfaceView implements Runnable {
         if(getHolder().getSurface().isValid()){
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y,paint);
-            canvas.drawBitmap(background2.background,background2.x, background2.y,paint);
+            //canvas.drawBitmap(background2.background,background2.x, background2.y,paint);
 
             canvas.drawBitmap(character.getCharacter(),character.x,character.y,paint);
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(100*screenRatioX);
+            String textScore = Integer.toString(score);
+            canvas.drawText(textScore,(character.x+character.width/2),(character.y-character.height/3),paint);
+            if(score > 10){
+                canvas.drawText("SUPA HOT!",(character.width/2),(character.y-character.height),paint);
+            }
 
             for (Fruit fruit : fruits){
                 canvas.drawBitmap(fruit.getFruit(), fruit.x, fruit.y, paint);

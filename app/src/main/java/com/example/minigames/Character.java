@@ -6,6 +6,7 @@ import static com.example.minigames.GameView.screenRatioY;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 public class Character {
 
@@ -47,5 +48,8 @@ public class Character {
             }
             return character2;
         }
+    }
+    Rect getRect(){
+        return new Rect(this.x,this.y,this.x+this.width,this.y+this.height/30);
     }
 }
