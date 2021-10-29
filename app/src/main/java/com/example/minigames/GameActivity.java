@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity {
@@ -26,8 +25,8 @@ public class GameActivity extends AppCompatActivity {
         gameView = new GameView((this),point.x, point.y);
 
         setContentView(gameView);
-
     }
+
 
     @Override
     protected void onPause() {
@@ -48,6 +47,13 @@ public class GameActivity extends AppCompatActivity {
             //moveTaskToBack(true);
             gameView.isPlaying= false;
             setContentView(R.layout.pause);
+            findViewById(R.id.quitgame).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gameView.close();
+                    startActivity(new Intent(GameActivity.this,MainActivity2.class));
+                }
+            });
             findViewById(R.id.resume).setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("ResourceType")
                 @Override
@@ -58,7 +64,7 @@ public class GameActivity extends AppCompatActivity {
                 }
             });
 
-            return true; // return
+            return true;
         }
 
         return false;

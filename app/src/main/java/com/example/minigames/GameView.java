@@ -52,7 +52,10 @@ public class GameView extends SurfaceView implements Runnable {
             draw();
             sleep();
         }
+    }
 
+    public void close(){
+        isPlaying = false;
     }
     public void resume(){
         isPlaying = true;
