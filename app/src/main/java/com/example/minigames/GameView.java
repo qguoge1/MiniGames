@@ -16,7 +16,7 @@ import java.util.List;
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
-    private boolean isPlaying;
+    public boolean isPlaying;
     private final Background background1;
     private final Background background2;
     private static int screenX, screenY;
@@ -136,6 +136,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void pause(){
         try {
             thread.join();
+            isPlaying=false;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

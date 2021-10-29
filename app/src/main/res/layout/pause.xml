@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".GameActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background2" />
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:width="200dp"
+        android:text="Resume"
+        android:textColor="#00BCD4"
+        android:textSize="25dp"
+        android:background="@drawable/gamebutton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"/>
+    <Button
+        android:id="@+id/quitgame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quit"
+        android:textAlignment="center"
+        android:width="200dp"
+        android:textColor="#00BCD4"
+        android:textSize="25dp"
+        android:background="@drawable/gamebutton"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/resume"
+        android:layout_marginTop="100dp"/>
+</RelativeLayout>
