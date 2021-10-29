@@ -86,10 +86,16 @@ public class GameView extends SurfaceView implements Runnable {
             if(fruit.y > character.y+character.height){
                 trash.add(fruit);
             }
+            //Cheat mode
+            /*if(fruit.y > character.y-character.height){
+                character.x = fruit.x;
+            }*/
             fruit.y += 20*screenRatioY;
+
         }
         for (Fruit fruit : trash){
             fruits.remove(fruit);
+
             if(trash.size()>100){
                 trash = new ArrayList<>();
             }
@@ -152,7 +158,7 @@ public class GameView extends SurfaceView implements Runnable {
         int xMax =(int) ((screenX-150)*screenRatioX);
         int randomPosition = (int) (randomNumber*xMax+xMin);
         fruit.x = randomPosition;
-        fruit.y = 0;
+        fruit.y = -(int) (fruit.height*screenRatioY);
         fruits.add(fruit);
     }
 }
