@@ -4,4 +4,5 @@
     <string name="catchthebeat">Wario WAE</string>
     <string name="audiobutton">Audio Button</string>
     <string name="background">Background</string>
+    <string name="title">ThisTitleNeedsToBeChanged</string>
 </resources>

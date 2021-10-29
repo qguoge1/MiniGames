@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background4"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/title"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/grayish_blue"
+        android:fontFamily="casual"
+        android:id="@+id/title"
+        />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/volume_on"
+        android:contentDescription="@string/audiobutton"
+        />
+    <Button
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/gamebutton"
+        android:text="Play"
+        android:textColor="#00BCD4" />
+    <Button
+        android:id="@+id/Options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Options"
+        android:textColor="#00BCD4"
+        android:background="@drawable/gamebutton"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/play"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/Quit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quit"
+        android:textColor="#00BCD4"
+        android:background="@drawable/gamebutton"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/Options"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
