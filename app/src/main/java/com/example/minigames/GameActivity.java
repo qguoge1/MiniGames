@@ -49,11 +49,11 @@ public class GameActivity extends AppCompatActivity {
             //moveTaskToBack(true);
             gameView.isPlaying= false;
             setContentView(R.layout.pause);
+            gameView.pause();
             findViewById(R.id.quitgame).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     gameView.close();
-                    gameView.mediaPlayer.stop();
                     startActivity(new Intent(GameActivity.this,MainActivity2.class));
                 }
             });

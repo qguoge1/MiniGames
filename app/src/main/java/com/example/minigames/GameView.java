@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements Runnable {
     public static MediaPlayer mediaPlayer;
 
     SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
-    private int OhNo,hit1,hit2,hit3,hit4,hit5;
+    private int OhNo,Pause,hit1,hit2,hit3,hit4,hit5;
 
     public GameView(Context context, int screenX,int screenY) {
         super(context);
@@ -49,6 +49,7 @@ public class GameView extends SurfaceView implements Runnable {
         screenRatioY = 1080f/1080;
 
         OhNo= soundPool.load(context,R.raw.oh_no,1);
+        Pause = soundPool.load(context,R.raw.pause,1);
         hit1= soundPool.load(context,R.raw.drum_hit_clap,1);
         hit2= soundPool.load(context,R.raw.drum_hitfinish,1);
         hit3= soundPool.load(context,R.raw.soft_slidertick,1);
@@ -149,7 +150,7 @@ public class GameView extends SurfaceView implements Runnable {
         if(getHolder().getSurface().isValid()){
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y,paint);
-            //canvas.drawBitmap(background2.background,background2.x, background2.y,paint);
+            canvas.drawBitmap(background2.background,background2.x, background2.y,paint);
 
             canvas.drawBitmap(character.getCharacter(),character.x,character.y,paint);
             paint.setColor(Color.WHITE);
@@ -181,6 +182,8 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             thread.join();
             isPlaying=false;
+            mediaPlayer.pause();
+            soundPool.play(Pause,1,1,2,0,1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

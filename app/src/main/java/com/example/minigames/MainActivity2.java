@@ -24,6 +24,7 @@ public class MainActivity2 extends AppCompatActivity {
         findViewById(R.id.quit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 System.exit(0);
             }
 
