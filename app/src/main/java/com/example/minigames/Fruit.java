@@ -13,7 +13,7 @@ public class Fruit {
 
     Bitmap fruit1, fruit2, fruit3, fruit4, fruit5;
     Bitmap fruitFinal;
-
+    public int indexFruit;
     Fruit(Resources res) {
         fruit1 = BitmapFactory.decodeResource(res, R.drawable.cerise);
         fruit2 = BitmapFactory.decodeResource(res, R.drawable.pomme);
@@ -46,18 +46,23 @@ public class Fruit {
         switch (randomFruit) {
             case 1:
                 fruitFinal = fruit1;
+                indexFruit=1;
                 break;
             case 2:
                 fruitFinal = fruit2;
+                indexFruit=2;
                 break;
             case 3:
                 fruitFinal = fruit3;
+                indexFruit=3;
                 break;
             case 4:
                 fruitFinal = fruit4;
+                indexFruit=4;
                 break;
             case 5:
                 fruitFinal = fruit5;
+                indexFruit=5;
                 break;
         }
     }

@@ -53,6 +53,7 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     gameView.close();
+                    gameView.mediaPlayer.stop();
                     startActivity(new Intent(GameActivity.this,MainActivity2.class));
                 }
             });

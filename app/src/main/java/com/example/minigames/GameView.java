@@ -1,11 +1,19 @@
 package com.example.minigames;
 
+import static android.content.Context.AUDIO_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.media.audiofx.Visualizer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -26,13 +34,26 @@ public class GameView extends SurfaceView implements Runnable {
     public static float screenRatioX, screenRatioY;
     int fruitDelayCnt=0;
     int score = 0;
+    public static MediaPlayer mediaPlayer;
+
+    SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
+    private int OhNo,hit1,hit2,hit3,hit4,hit5;
+
     public GameView(Context context, int screenX,int screenY) {
         super(context);
         GameView.screenX = screenX;
         GameView.screenY = screenY;
+        GameView.mediaPlayer = MediaPlayer.create(context,R.raw.dokidoki);
 
         screenRatioX = 1920f/2340;
         screenRatioY = 1080f/1080;
+
+        OhNo= soundPool.load(context,R.raw.oh_no,1);
+        hit1= soundPool.load(context,R.raw.drum_hit_clap,1);
+        hit2= soundPool.load(context,R.raw.drum_hitfinish,1);
+        hit3= soundPool.load(context,R.raw.soft_slidertick,1);
+        hit4= soundPool.load(context,R.raw.soft_hitwhistle,1);
+        hit5= soundPool.load(context,R.raw.normal_hitwhistle,1);
 
         background1 = new Background(screenX,screenY,getResources());
         background2 = new Background(screenX,screenY,getResources());
@@ -48,6 +69,8 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while(isPlaying){
+
+            mediaPlayer.start();
             update();
             draw();
             sleep();
@@ -83,11 +106,29 @@ public class GameView extends SurfaceView implements Runnable {
         for (Fruit fruit : fruits){
             if(Hitbox.intersects(fruit.getRect(),character.getRect())){
                 trash.add(fruit);
+                switch(fruit.indexFruit){
+                    case 1:
+                        soundPool.play(hit1,1,1,1,0,1);
+                        break;
+                    case 2:
+                        soundPool.play(hit2,1,1,1,0,1);
+                        break;
+                    case 3:
+                        soundPool.play(hit3,1,1,1,0,1);
+                        break;
+                    case 4:
+                        soundPool.play(hit4,1,1,1,0,1);
+                        break;
+                    case 5:
+                        soundPool.play(hit5,1,1,1,0,1);
+                        break;
+                }
                 score+=1;
 
             }
             if(fruit.y > character.y+character.height){
                 trash.add(fruit);
+                soundPool.play(OhNo,1,1,1,0,1);
             }
             //Cheat mode
             /*if(fruit.y > character.y-character.height){
