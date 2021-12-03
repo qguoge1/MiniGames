@@ -18,6 +18,9 @@ public class Character {
         character1 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherkiai);
         character2 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherfail);
 
+        character1 = BitmapFactory.decodeResource(res,R.drawable.qqcontent);
+        character2 = BitmapFactory.decodeResource(res,R.drawable.qqpleure);
+
         width = character1.getWidth();
         height = character1.getHeight();
 
