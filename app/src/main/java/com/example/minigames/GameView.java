@@ -28,12 +28,13 @@ public class GameView extends SurfaceView implements Runnable {
     public static float screenRatioX, screenRatioY;
     private int fruitDelayCnt=0;
     private int Combo = 0;
-
+    private int fruitPopDelay=7;
     private double caughtFruitsCnt = 0;
     private double fallenFruitsCnt = 0;
     private double totalFruitsGenerated=0;
     private double accuracy= 100;
 
+    private int GameCounter = 60;
     public static MediaPlayer mediaPlayer;
 
     SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
@@ -70,7 +71,6 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while(isPlaying){
-
             mediaPlayer.start();
             update();
             draw();
@@ -98,10 +98,10 @@ public class GameView extends SurfaceView implements Runnable {
             character.x = 0;
         }
 
-        if( fruits.size() < 5){
+        if( fruits.size() < 10){
 
             fruitDelayCnt++;
-            if(fruitDelayCnt >= 10) {
+            if(fruitDelayCnt >= fruitPopDelay) {
                 newFruit();
                 fruitDelayCnt=0;
             }
@@ -142,8 +142,14 @@ public class GameView extends SurfaceView implements Runnable {
             /*if(fruit.y > character.y-character.height){
                 character.x = fruit.x;
             }*/
-            fruit.y += 20*screenRatioY;
-
+            if(Combo < 20) {
+                fruit.y += (10 + Combo/2) * screenRatioY;
+                fruitPopDelay = 20;
+            }
+            else {
+                fruit.y += 20 * screenRatioY;
+                fruitPopDelay = 10;
+            }
         }
         for (Fruit fruit : trash){
             fruits.remove(fruit);
@@ -188,7 +194,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
     private void sleep(){
         try {
-            Thread.sleep(17);       //1/17 = ~60 fps
+            Thread.sleep(10);       //1/17 = ~60 fps
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

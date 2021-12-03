@@ -25,8 +25,8 @@ public class Character {
         width = character1.getWidth();
         height = character1.getHeight();
 
-        width /= 8;
-        height /= 8;
+        width /= 6;
+        height /= 6;
 
         width = (int) (width * screenRatioX);
         height = (int) (height * screenRatioY);
