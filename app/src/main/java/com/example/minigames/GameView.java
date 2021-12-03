@@ -1,19 +1,13 @@
 package com.example.minigames;
 
-import static android.content.Context.AUDIO_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.media.audiofx.Visualizer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -32,8 +26,14 @@ public class GameView extends SurfaceView implements Runnable {
     private final Character character;
     private List<Fruit> fruits;
     public static float screenRatioX, screenRatioY;
-    int fruitDelayCnt=0;
-    int score = 0;
+    private int fruitDelayCnt=0;
+    private int Combo = 0;
+
+    private double caughtFruitsCnt = 0;
+    private double fallenFruitsCnt = 0;
+    private double totalFruitsGenerated=0;
+    private double accuracy= 100;
+
     public static MediaPlayer mediaPlayer;
 
     SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
@@ -87,6 +87,10 @@ public class GameView extends SurfaceView implements Runnable {
         thread.start();
     }
     private void update(){
+        totalFruitsGenerated = fallenFruitsCnt+caughtFruitsCnt;
+        if(totalFruitsGenerated !=0){
+            accuracy = 100-(fallenFruitsCnt/totalFruitsGenerated)*100;
+        }
         if(character.x > screenX-character.width){
             character.x = screenX-character.width;
         }
@@ -106,6 +110,7 @@ public class GameView extends SurfaceView implements Runnable {
         Rect Hitbox = new Rect();
         for (Fruit fruit : fruits){
             if(Hitbox.intersects(fruit.getRect(),character.getRect())){
+                caughtFruitsCnt +=1;
                 trash.add(fruit);
                 switch(fruit.indexFruit){
                     case 1:
@@ -124,11 +129,13 @@ public class GameView extends SurfaceView implements Runnable {
                         soundPool.play(hit5,1,1,1,0,1);
                         break;
                 }
-                score+=1;
+                Combo +=1;
 
             }
             if(fruit.y > character.y+character.height){
                 trash.add(fruit);
+                Combo =0;
+                fallenFruitsCnt+=1;
                 soundPool.play(OhNo,1,1,1,0,1);
             }
             //Cheat mode
@@ -151,16 +158,26 @@ public class GameView extends SurfaceView implements Runnable {
             Canvas canvas = getHolder().lockCanvas();
             canvas.drawBitmap(background1.background,background1.x, background1.y,paint);
             canvas.drawBitmap(background2.background,background2.x, background2.y,paint);
+            if(Combo < 10){
+                canvas.drawBitmap(character.getCharacter(1),character.x,character.y,paint);
+            }
+            else if(Combo >= 10 && Combo <20){
+                canvas.drawBitmap(character.getCharacter(2),character.x,character.y,paint);
+            }
+            else{
+                canvas.drawBitmap(character.getCharacter(3),character.x,character.y,paint);
+            }
 
-            canvas.drawBitmap(character.getCharacter(),character.x,character.y,paint);
             paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextSize(100*screenRatioX);
-            String textScore = Integer.toString(score);
-            canvas.drawText(textScore,(character.x+character.width/2),(character.y-character.height/3),paint);
-            if(score > 10){
-                canvas.drawText("SUPA HOT!",(character.width/2),(character.y-character.height),paint);
-            }
+            String TextCombo = Integer.toString(Combo);
+
+            canvas.drawText(TextCombo,(character.x+character.width/2),(character.y-character.height/3),paint);
+
+            String textAccuracy = String.format("%.2f %%",accuracy);
+            canvas.drawText("Accuracy : "+ textAccuracy,screenRatioX*(screenX-500),screenRatioY*200,paint);
+
 
             for (Fruit fruit : fruits){
                 canvas.drawBitmap(fruit.getFruit(), fruit.x, fruit.y, paint);
