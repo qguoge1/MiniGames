@@ -34,8 +34,8 @@ public class Character {
         character1 = Bitmap.createScaledBitmap(character1, width, height, false);
         character2 = Bitmap.createScaledBitmap(character2, width, height, false);
         character3 = Bitmap.createScaledBitmap(character3, width, height, false);
-        x = screenX / 2 - (int) screenRatioX * 100;
-        y = screenY - (int) screenRatioY * 700;
+        x = (int) (screenX / 2 - screenRatioX * 100);
+        y = (int) (screenY /2 + screenRatioY* 200);
     }
 
     Bitmap getCharacter(int index) {

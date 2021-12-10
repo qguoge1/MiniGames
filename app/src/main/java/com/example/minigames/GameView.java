@@ -1,6 +1,7 @@
 package com.example.minigames;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
@@ -34,6 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
     private double totalFruitsGenerated=0;
     private double accuracy= 100;
 
+    private int score=0;
     private int GameCounter = 60;
     public static MediaPlayer mediaPlayer;
 
@@ -42,12 +45,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX,int screenY) {
         super(context);
-        GameView.screenX = screenX;
-        GameView.screenY = screenY;
+        GameView.screenX = (int) (screenX);
+        GameView.screenY = (int) (screenY);
         GameView.mediaPlayer = MediaPlayer.create(context,R.raw.dokidoki);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
 
-        screenRatioX = 1920f/2340;
-        screenRatioY = 1080f/1080;
+        ((Activity) getContext()).getWindowManager()
+                .getDefaultDisplay()
+                .getMetrics(displayMetrics);
+
+        screenRatioX = (float) 1920f/screenX;
+        screenRatioY = (float) 1080f/screenY;
 
         OhNo= soundPool.load(context,R.raw.oh_no,1);
         Pause = soundPool.load(context,R.raw.pause,1);
@@ -130,6 +138,7 @@ public class GameView extends SurfaceView implements Runnable {
                         break;
                 }
                 Combo +=1;
+                score+= 50*Combo;
 
             }
             if(fruit.y > character.y+character.height){
@@ -176,14 +185,17 @@ public class GameView extends SurfaceView implements Runnable {
 
             paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
-            paint.setTextSize(100*screenRatioX);
+            paint.setTextSize(60*screenRatioX);
             String TextCombo = Integer.toString(Combo);
 
             canvas.drawText(TextCombo,(character.x+character.width/2),(character.y-character.height/3),paint);
 
             String textAccuracy = String.format("%.2f %%",accuracy);
-            canvas.drawText("Accuracy : "+ textAccuracy,screenRatioX*(screenX-500),screenRatioY*200,paint);
-
+            String textScore = String.format("%09d",score);
+            paint.setColor(Color.BLUE);
+            canvas.drawText("Accuracy : "+ textAccuracy,screenX-(700*screenRatioX),screenRatioY*200,paint);
+            paint.setColor(Color.GREEN);
+            canvas.drawText("Score :" + textScore,screenX-(700*screenRatioX),screenRatioY*100,paint);
 
             for (Fruit fruit : fruits){
                 canvas.drawBitmap(fruit.getFruit(), fruit.x, fruit.y, paint);
