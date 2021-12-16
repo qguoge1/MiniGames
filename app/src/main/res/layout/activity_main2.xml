@@ -23,13 +23,7 @@
         android:fontFamily="casual"
         android:id="@+id/title"
         />
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/volume_on"
-        android:contentDescription="@string/audiobutton"
-        />
+
     <Button
         android:id="@+id/play"
         android:layout_width="wrap_content"
