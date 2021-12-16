@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -39,6 +40,18 @@ public class GameView extends SurfaceView implements Runnable {
     private int score=0;
     private int GameCounter = 60;
     public static MediaPlayer mediaPlayer;
+
+    private int gameDuration = 30000;
+    CountDownTimer timer = new CountDownTimer(gameDuration, 1000) {
+
+        public void onTick(long millisUntilFinished) {
+            gameDuration -= 1000;
+        }
+
+        public void onFinish() {
+            close();
+        }
+    }.start();
 
     SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
     private int OhNo,Pause,hit1,hit2,hit3,hit4,hit5;
@@ -192,6 +205,10 @@ public class GameView extends SurfaceView implements Runnable {
 
             String textAccuracy = String.format("%.2f %%",accuracy);
             String textScore = String.format("%09d",score);
+            String textTimer = String.format("%02ds",gameDuration/1000);
+
+            paint.setColor(Color.CYAN);
+            canvas.drawText("Time : " + textTimer, screenX*screenRatioX/2, screenRatioY*60,paint);
             paint.setColor(Color.BLUE);
             canvas.drawText("Accuracy : "+ textAccuracy,screenX-(700*screenRatioX),screenRatioY*200,paint);
             paint.setColor(Color.GREEN);
