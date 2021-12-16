@@ -3,6 +3,7 @@ package com.example.minigames;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,11 +23,11 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
     public boolean isPlaying;
-    private final Background background1;
-    private final Background background2;
+    private Background background1;
+    private Background background2;
     private static int screenX, screenY;
-    private final Paint paint;
-    private final Character character;
+    private Paint paint;
+    private Character character;
     private List<Fruit> fruits;
     public static float screenRatioX, screenRatioY;
     private int fruitDelayCnt=0;
@@ -40,8 +41,9 @@ public class GameView extends SurfaceView implements Runnable {
     private int score=0;
     private int GameCounter = 60;
     public static MediaPlayer mediaPlayer;
-
+    private boolean finished = false;
     private int gameDuration = 30000;
+
     CountDownTimer timer = new CountDownTimer(gameDuration, 1000) {
 
         public void onTick(long millisUntilFinished) {
@@ -49,15 +51,24 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         public void onFinish() {
+            finished = true;
+            draw();
+            sleep();
             close();
+            gameIsFinished();
         }
-    }.start();
+    };
 
     SoundPool soundPool= new SoundPool.Builder().setMaxStreams(7).build();
     private int OhNo,Pause,hit1,hit2,hit3,hit4,hit5;
+    private int endMusic,badEnding,averageEnding,goodEnding;
+
+    private ChangeListener listener;
+
 
     public GameView(Context context, int screenX,int screenY) {
         super(context);
+
         GameView.screenX = (int) (screenX);
         GameView.screenY = (int) (screenY);
         GameView.mediaPlayer = MediaPlayer.create(context,R.raw.dokidoki);
@@ -77,6 +88,11 @@ public class GameView extends SurfaceView implements Runnable {
         hit3= soundPool.load(context,R.raw.soft_slidertick,1);
         hit4= soundPool.load(context,R.raw.soft_hitwhistle,1);
         hit5= soundPool.load(context,R.raw.normal_hitwhistle,1);
+
+        endMusic = soundPool.load(context,R.raw.awakenpillarmentheme,1);
+        badEnding =soundPool.load(context,R.raw.mancryingsoundeffect,1);
+        averageEnding =soundPool.load(context,R.raw.heheboiii,1);
+        goodEnding =soundPool.load(context,R.raw.happyyeaaahboiiiii,1);
 
         background1 = new Background(screenX,screenY,getResources());
         background2 = new Background(screenX,screenY,getResources());
@@ -101,11 +117,13 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void close(){
         isPlaying = false;
+
     }
     public void resume(){
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
+        timer.start();
     }
     private void update(){
         totalFruitsGenerated = fallenFruitsCnt+caughtFruitsCnt;
@@ -217,13 +235,36 @@ public class GameView extends SurfaceView implements Runnable {
             for (Fruit fruit : fruits){
                 canvas.drawBitmap(fruit.getFruit(), fruit.x, fruit.y, paint);
             }
+            if(finished == true ){
+                canvas.drawBitmap(background1.background,background1.x, background1.y,paint);
+                soundPool.play(endMusic,1,1,1,0,1);
+                paint.setColor(Color.GREEN);
+                paint.setTextSize(150*screenRatioX);
+                canvas.drawText("Score :" + textScore,screenX/3-(700*screenRatioX),screenY/2*screenRatioY,paint);
+                if(accuracy < 50){
+                    canvas.drawBitmap(character.getCharacter(1),(screenX/2+300)*screenRatioX,screenY/4*screenRatioY,paint);
+                    soundPool.play(badEnding,1,1,1,0,1);
+                }
+                else if (accuracy>= 50 && accuracy <=85){
+                    canvas.drawBitmap(character.getCharacter(2),(screenX/2+300)*screenRatioX,screenY/4*screenRatioY,paint);
+                    soundPool.play(averageEnding,1,1,1,0,1);
+                }
+                else{
+                    canvas.drawBitmap(character.getCharacter(3),(screenX/2+300)*screenRatioX,screenY/4*screenRatioY,paint);
+                    soundPool.play(goodEnding,1,1,1,0,1);
+                }
+            }
             getHolder().unlockCanvasAndPost(canvas);
+
 
         }
     }
     private void sleep(){
         try {
             Thread.sleep(10);       //1/17 = ~60 fps
+            if(finished==true){
+                Thread.sleep(2000);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -234,6 +275,7 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             thread.join();
             isPlaying=false;
+            timer.cancel();
             mediaPlayer.pause();
             soundPool.play(Pause,1,1,2,0,1);
         } catch (InterruptedException e) {
@@ -260,5 +302,21 @@ public class GameView extends SurfaceView implements Runnable {
         fruit.x = randomPosition;
         fruit.y = -(int) (fruit.height*screenRatioY);
         fruits.add(fruit);
+    }
+
+// Detection du changement de variable finished afin de changer d'activity dans gameActivity
+    public void gameIsFinished(){
+
+        if(listener != null) listener.onChange();
+    }
+    public ChangeListener getListener(){
+        return listener;
+    }
+    public void setListener(ChangeListener listener){
+        this.listener = listener;
+    }
+
+    public interface ChangeListener{
+        void onChange();
     }
 }

@@ -30,8 +30,9 @@ MediaPlayer mediaPlayer = new MediaPlayer();
         findViewById(R.id.quit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                finishAffinity();
                 System.exit(0);
+
             }
 
         });

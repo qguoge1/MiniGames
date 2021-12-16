@@ -22,7 +22,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,GameActivity.class));
-
+            }
+        });
+        findViewById(R.id.buttonquitactivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(MainActivity.this, MainActivity2.class));
             }
         });
 

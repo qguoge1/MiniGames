@@ -17,7 +17,6 @@ import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity {
     GameView gameView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +27,13 @@ public class GameActivity extends AppCompatActivity {
 
         gameView = new GameView((this),point.x, point.y);
         setContentView(gameView);
+        gameView.setListener(new GameView.ChangeListener() {
+            @Override
+            public void onChange() {
+                startActivity(new Intent(GameActivity.this,MainActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -55,7 +61,8 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     gameView.close();
-                    startActivity(new Intent(GameActivity.this,MainActivity2.class));
+                    finish();
+                    startActivity(new Intent(GameActivity.this,MainActivity.class));
                 }
             });
             findViewById(R.id.resume).setOnClickListener(new View.OnClickListener() {
@@ -73,5 +80,4 @@ public class GameActivity extends AppCompatActivity {
 
         return false;
     }
-
 }

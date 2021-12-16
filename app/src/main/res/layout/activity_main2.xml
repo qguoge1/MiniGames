@@ -27,37 +27,26 @@
     <Button
         android:id="@+id/play"
         android:layout_width="wrap_content"
-        android:width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:textSize="25dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="100dp"
+        android:width="200dp"
         android:background="@drawable/gamebutton"
         android:text="Play"
-        android:textColor="#00BCD4" />
-    <Button
-        android:id="@+id/Options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:width="200dp"
-        android:text="Options"
-        android:textSize="25dp"
         android:textColor="#00BCD4"
-        android:background="@drawable/gamebutton"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/play"
-        android:layout_marginTop="20dp"/>
+        android:textSize="25dp" />
+
     <Button
         android:id="@+id/quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/play"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:width="200dp"
+        android:background="@drawable/gamebutton"
         android:text="Quit"
         android:textColor="#00BCD4"
-        android:textSize="25dp"
-        android:background="@drawable/gamebutton"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/Options"
-        android:layout_marginTop="20dp"/>
+        android:textSize="25dp" />
 </RelativeLayout>
