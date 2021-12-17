@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ViewConstructor")
+
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
@@ -30,6 +31,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Character character;
     private List<Fruit> fruits;
     public static float screenRatioX, screenRatioY;
+    // Variables pour les fruits
     private int fruitDelayCnt=0;
     private int Combo = 0;
     private int fruitPopDelay=7;
@@ -37,9 +39,10 @@ public class GameView extends SurfaceView implements Runnable {
     private double fallenFruitsCnt = 0;
     private double totalFruitsGenerated=0;
     private double accuracy= 100;
-
     private int score=0;
+    // Variables
     public static MediaPlayer mediaPlayer;
+
     private boolean finished = false;
     private int gameDuration = 30000;
 
@@ -49,7 +52,7 @@ public class GameView extends SurfaceView implements Runnable {
             gameDuration -= 1000;
         }
 
-        public void onFinish() {
+        public void onFinish() {    // La fin du compteur, je mets le flag à 0 pour afficher le score
             finished = true;
             draw();
             sleep();
@@ -62,7 +65,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int OhNo,Pause,hit1,hit2,hit3,hit4,hit5;
     private int endMusic,badEnding,averageEnding,goodEnding;
 
-    private ChangeListener listener;
+    private ChangeListener listener;        // Ecouteur pour détecter la fin du jeu
 
 
     public GameView(Context context, int screenX,int screenY) {
@@ -70,16 +73,13 @@ public class GameView extends SurfaceView implements Runnable {
 
         GameView.screenX = (int) (screenX);
         GameView.screenY = (int) (screenY);
+        // MediaPlayer pour jouer la musique de fond
         GameView.mediaPlayer = MediaPlayer.create(context,R.raw.dokidoki);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
 
-        ((Activity) getContext()).getWindowManager()
-                .getDefaultDisplay()
-                .getMetrics(displayMetrics);
-
+        // Ratio de l'écran qui permet de gérer les différentes tailles d'écrans (ex : 300* screenRatioX ou Y)
         screenRatioX = (float) 1920f/screenX;
         screenRatioY = (float) 1080f/screenY;
-
+        // Variables sons (à durée courte
         OhNo= soundPool.load(context,R.raw.oh_no,1);
         Pause = soundPool.load(context,R.raw.pause,1);
         hit1= soundPool.load(context,R.raw.drum_hit_clap,1);
@@ -92,7 +92,7 @@ public class GameView extends SurfaceView implements Runnable {
         badEnding =soundPool.load(context,R.raw.mancryingsoundeffect,1);
         averageEnding =soundPool.load(context,R.raw.heheboiii,1);
         goodEnding =soundPool.load(context,R.raw.happyyeaaahboiiiii,1);
-
+        // Variables de
         background1 = new Background(screenX,screenY,getResources());
         background2 = new Background(screenX,screenY,getResources());
 
@@ -103,7 +103,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         fruits = new ArrayList<>();
     }
-
+    //boucle principale du jeu (Mis à jour des données -> Dessin -> Temporisation
     @Override
     public void run() {
         while(isPlaying){
@@ -113,17 +113,19 @@ public class GameView extends SurfaceView implements Runnable {
             sleep();
         }
     }
-
+    // Méthode flag à 0
     public void close(){
         isPlaying = false;
 
     }
+    // Méthode reprise de jeu (Après une pause par exemple)
     public void resume(){
         isPlaying = true;
         thread = new Thread(this);
         thread.start();
         timer.start();
     }
+    // Méthode mis à jour du jeu, positions des perso, fruits ou encore le score, précisions,
     private void update(){
         totalFruitsGenerated = fallenFruitsCnt+caughtFruitsCnt;
         if(totalFruitsGenerated !=0){
@@ -177,10 +179,7 @@ public class GameView extends SurfaceView implements Runnable {
                 fallenFruitsCnt+=1;
                 soundPool.play(OhNo,1,1,1,0,1);
             }
-            //Cheat mode
-            /*if(fruit.y > character.y-character.height){
-                character.x = fruit.x;
-            }*/
+
             if(Combo < 20) {
                 fruit.y += (10 + Combo/2) * screenRatioY;
                 fruitPopDelay = 20;
@@ -198,6 +197,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
     }
+    // Méthode dessin utilisé pour le canvas
     private void draw(){
         if(getHolder().getSurface().isValid()){
             Canvas canvas = getHolder().lockCanvas();
@@ -260,9 +260,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
     private void sleep(){
         try {
-            Thread.sleep(10);       //1/17 = ~60 fps
-            if(finished==true){
-                Thread.sleep(2000);
+            Thread.sleep(10);       //1/17 = ~60 fps    1/10 => 100 fps
+            if(finished){
+                Thread.sleep(2000);     // Pause pour afficher le score de fin
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -270,28 +270,30 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     }
+    // Lorsque l'on clique sur le bouton back, on arrête le jeu
     public void pause(){
         try {
-            thread.join();
+            thread.join();      // Mets en pause le thread
             isPlaying=false;
-            timer.cancel();
-            mediaPlayer.pause();
-            soundPool.play(Pause,1,1,2,0,1);
+            timer.cancel();     // Stoppe le timer
+            mediaPlayer.pause();        //Stoppe la musique
+            soundPool.play(Pause,1,1,2,0,1);        //Joue la musique de pause
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
+    // Méthode qui capture l'action de l'utilisateur (doigts)
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_MOVE:
-                if(event.getX() < screenX-character.width && event.getX()>0)
-                    character.x = (int) event.getX();
+                if(event.getX() < screenX-character.width && event.getX()>0)        // Si l'endroit appuyé de dépasse pas l'écran
+                    character.x = (int) event.getX();           // Le personnage se déplace là où l'utilisateur à appuyé
         }
         return true;
     }
+    // Méthode création de fruit (position X aléatoire)
     public void newFruit(){
         Fruit fruit = new Fruit(getResources());
         double randomNumber = Math.random();

@@ -12,8 +12,7 @@ public class Character {
 
     int x, y, width, height, moveCounter = 0;
     Bitmap character1, character2,character3;
-    boolean swap = false;
-    boolean isMovingLeft= false, isMovingRight=false;
+
     Character(int screenX, int screenY, Resources res) {
         character1 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherkiai);
         character2 = BitmapFactory.decodeResource(res, R.drawable.fruitcatcherfail);
@@ -37,7 +36,7 @@ public class Character {
         x = (int) (screenX / 2 - screenRatioX * 100);
         y = (int) (screenY /2 + screenRatioY* 200);
     }
-
+    //Getter du personnage en fonction de l'index (Varie en fonction du combo)
     Bitmap getCharacter(int index) {
         switch(index){
             case 1:
@@ -48,6 +47,7 @@ public class Character {
                 return character3;
         }
     }
+    // Getter de la hitbox du personnage
     Rect getRect(){
         return new Rect(this.x,this.y,this.x+this.width,this.y+this.height/30);
     }

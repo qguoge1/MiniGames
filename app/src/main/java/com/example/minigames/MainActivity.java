@@ -17,13 +17,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);       //Active le flag de screen plein
-
+        // Lance le jeu si l'utilisateur clique sur le texte "Tap the text to play"
         findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,GameActivity.class));
             }
         });
+        // Quitte le menu de "Catch the apprenti" si l'utilisateur choisi "Quit"
         findViewById(R.id.buttonquitactivity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
