@@ -39,7 +39,6 @@ public class GameView extends SurfaceView implements Runnable {
     private double accuracy= 100;
 
     private int score=0;
-    private int GameCounter = 60;
     public static MediaPlayer mediaPlayer;
     private boolean finished = false;
     private int gameDuration = 30000;
